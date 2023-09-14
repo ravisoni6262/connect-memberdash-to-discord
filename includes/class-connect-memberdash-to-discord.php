@@ -156,6 +156,8 @@ class Connect_Memberdash_To_Discord {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_filter( 'ms_plugin_menu_pages', $plugin_admin, 'ets_ms_add_discord_menu',10,3 );
+		$this->loader->add_filter( 'ms_route_submenu_request', $plugin_admin, 'ets_ms_route_submenu_request',10 ,2 );
 
 	}
 

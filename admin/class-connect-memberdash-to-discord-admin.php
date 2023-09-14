@@ -100,4 +100,51 @@ class Connect_Memberdash_To_Discord_Admin {
 
 	}
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param [type] $pages
+	 * @param [type] $limited_mode
+	 * @param [type] $original_plugin_instance
+	 * @return void
+	 */
+	public function ets_ms_add_discord_menu( $pages, $limited_mode, $original_plugin_instance ) {
+
+		$custom_page = array(
+			'title' => 'Discord',
+			'slug' => 'discord',
+		);
+
+		$pages[] = $custom_page;
+
+		return $pages;
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @param [type] $handler
+	 * @param [type] $controller_instance
+	 * @return void
+	 */
+	public function ets_ms_route_submenu_request( $handler, $controller_instance ) {
+
+			$handler = array(
+				'discord',
+				array( $this, 'custom_submenu_callback' ),
+			);
+
+		return $handler;
+	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * @return void
+	 */
+	public function custom_submenu_callback() {
+
+		echo 'discord';
+	}
+
 }
