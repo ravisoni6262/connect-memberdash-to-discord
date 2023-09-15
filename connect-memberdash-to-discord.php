@@ -38,6 +38,46 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'CONNECT_MEMBERDASH_TO_DISCORD_VERSION', '1.0.0' );
 
 /**
+ * Define plugin directory path
+ */
+define( 'CONNECT_MEMBERDASH_TO_DISCORD_PLUGIN_DIR_PATH', plugin_dir_path( __FILE__ ) );
+
+/**
+ * Define plugin directory URL
+ */
+define( 'CONNECT_MEMBERDASH_TO_DISCORD_PLUGIN_DIR_URL', plugin_dir_url( __FILE__ ) );
+
+/**
+ * Discord Bot Permissions.
+ */
+define( 'CONNECT_MEMBERDASH_TO_DISCORD_BOT_PERMISSIONS', 8 );
+
+/**
+ * Discord api call scopes.
+ */
+define( 'CONNECT_MEMBERDASH_TO_DISCORD_OAUTH_SCOPES', 'identify email guilds guilds.join' );
+
+/**
+ * Define group name for action scheduler actions
+ */
+define( 'CONNECT_MEMBERDASH_TO_DISCORD_AS_GROUP_NAME', 'ets-memberdash-discord' );
+
+/**
+ * Discord API url.
+ */
+define( 'CONNECT_MEMBERDASH_TO_DISCORD_API_URL', 'https://discord.com/api/v10/' );
+
+/**
+ * Follwing response codes not cosider for re-try API calls.
+ */
+define( 'CONNECT_MEMBERDASH_TO_DISCORD_DONOT_RETRY_THESE_API_CODES', array( 0, 10003, 50033, 10004, 50025, 10013, 10011 ) );
+
+/**
+ * Define plugin directory url
+ */
+define( 'CONNECT_MEMBERDASH_TO_DISCORD_DONOT_RETRY_HTTP_CODES', array( 400, 401, 403, 404, 405, 502 ) );
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-connect-memberdash-to-discord-activator.php
  */

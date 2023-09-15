@@ -44,13 +44,13 @@ class Connect_Memberdash_To_Discord_Admin {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param      string $plugin_name       The name of this plugin.
+	 * @param      string $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 
 	}
 
@@ -72,8 +72,11 @@ class Connect_Memberdash_To_Discord_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
+		$min_css = ( defined( 'WP_DEBUG' ) && true === WP_DEBUG ) ? '' : '.min';
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/connect-memberdash-to-discord-admin.css', array(), $this->version, 'all' );
+		wp_register_style( $this->plugin_name . '-select2', plugin_dir_url( __FILE__ ) . 'css/select2.css', array(), $this->version, 'all' );
+		wp_register_style( $this->plugin_name . 'discord_tabs_css', plugin_dir_url( __FILE__ ) . 'css/skeletabs.css', array(), $this->version, 'all' );
+		wp_register_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/connect-memberdash-to-discord-admin' . $min_css . '.css', array(), $this->version, 'all' );
 
 	}
 
@@ -95,8 +98,17 @@ class Connect_Memberdash_To_Discord_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/connect-memberdash-to-discord-admin.js', array( 'jquery' ), $this->version, false );
+		$min_js = ( defined( 'WP_DEBUG' ) && true === WP_DEBUG ) ? '' : '.min';
+		wp_register_script( $this->plugin_name . '-select2', plugin_dir_url( __FILE__ ) . 'js/select2.js', array( 'jquery' ), $this->version, false );
+		wp_register_script( $this->plugin_name . '-tabs-js', plugin_dir_url( __FILE__ ) . 'js/skeletabs.js', array( 'jquery' ), $this->version, false );
+		wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/connect-memberdash-to-discord-admin' . $min_js . '.js', array( 'jquery' ), $this->version, false );
+		$script_params = array(
+			'admin_ajax'                   => admin_url( 'admin-ajax.php' ),
+			'permissions_const'            => CONNECT_MEMBERDASH_TO_DISCORD_BOT_PERMISSIONS,
+			'is_admin'                     => is_admin(),
+			'ets_memberdash_discord_nonce' => wp_create_nonce( 'ets-memberdash-discord-ajax-nonce' ),
+		);
+		wp_localize_script( $this->plugin_name, 'etsMemberDashParams', $script_params );
 
 	}
 
@@ -112,7 +124,7 @@ class Connect_Memberdash_To_Discord_Admin {
 
 		$custom_page = array(
 			'title' => 'Discord',
-			'slug' => 'discord',
+			'slug'  => 'discord',
 		);
 
 		$pages[] = $custom_page;
@@ -131,10 +143,10 @@ class Connect_Memberdash_To_Discord_Admin {
 
 			$handler = array(
 				'discord',
-				array( $this, 'custom_submenu_callback' ),
+				array( $this, 'ets_ms_submenu_callback' ),
 			);
 
-		return $handler;
+			return $handler;
 	}
 
 	/**
@@ -142,9 +154,22 @@ class Connect_Memberdash_To_Discord_Admin {
 	 *
 	 * @return void
 	 */
-	public function custom_submenu_callback() {
+	public function ets_ms_submenu_callback() {
 
-		echo 'discord';
+		if ( ! current_user_can( 'administrator' ) ) {
+			wp_send_json_error( 'You do not have sufficient rights', 403 );
+			exit();
+		}
+		wp_enqueue_style( $this->plugin_name . '-select2' );
+		wp_enqueue_style( $this->plugin_name . 'discord_tabs_css' );
+		wp_enqueue_style( 'wp-color-picker' );
+		wp_enqueue_style( $this->plugin_name );
+		wp_enqueue_script( $this->plugin_name . '-select2' );
+		wp_enqueue_script( $this->plugin_name . '-tabs-js' );
+		wp_enqueue_script( $this->plugin_name );
+		wp_enqueue_script( 'jquery-ui-draggable' );
+		wp_enqueue_script( 'jquery-ui-droppable' );
+		require_once CONNECT_MEMBERDASH_TO_DISCORD_PLUGIN_DIR_PATH . 'admin/partials/connect-memberdash-to-discord-admin-display.php';
 	}
 
 }

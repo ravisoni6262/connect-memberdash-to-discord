@@ -99,6 +99,19 @@ class Connect_Memberdash_To_Discord {
 	 */
 	private function load_dependencies() {
 
+
+		/**
+		 * The class responsible for Logs
+		 * core plugin.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-connect-memberdash-to-discord-logs.php';
+
+		/**
+		 * Common functions file.
+		 * core plugin.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/functions.php';
+
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
@@ -156,8 +169,8 @@ class Connect_Memberdash_To_Discord {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		$this->loader->add_filter( 'ms_plugin_menu_pages', $plugin_admin, 'ets_ms_add_discord_menu',10,3 );
-		$this->loader->add_filter( 'ms_route_submenu_request', $plugin_admin, 'ets_ms_route_submenu_request',10 ,2 );
+		$this->loader->add_filter( 'ms_plugin_menu_pages', $plugin_admin, 'ets_ms_add_discord_menu', 10, 3 );
+		$this->loader->add_filter( 'ms_route_submenu_request', $plugin_admin, 'ets_ms_route_submenu_request', 10, 2 );
 
 	}
 
